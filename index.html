@@ -15,6 +15,7 @@
       --a:#00e6ff; --b:#2f7bff; --c:#7c4dff;
       --brd:rgba(130,160,255,.22); --glass:rgba(18,25,61,.55);
       --shadow:0 20px 50px rgba(0,0,0,.35);
+      --button-bg: linear-gradient(90deg, #00d1ff, #2f7bff);
     }
     *{box-sizing:border-box; margin:0; padding:0}
     body{
@@ -40,20 +41,19 @@
     /* Cards KPI */
     .stats-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:22px 0 30px}
     .stat-card{
-      background:linear-gradient(180deg,var(--card),rgba(14,18,48,.85));
+      background: var(--button-bg);
       border:1px solid var(--brd); border-radius:16px; padding:20px; text-align:center;
-      box-shadow:var(--shadow)
+      box-shadow:var(--shadow); color: #fff;
     }
     .stat-number{
       font-size:2.4rem; font-weight:900; line-height:1;
-      background:linear-gradient(90deg,var(--a),var(--b));
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      color: #fff;
       margin-bottom:6px;
     }
-    .stat-label{color:var(--muted); font-weight:700; font-size:.95rem}
+    .stat-label{color:#fff; font-weight:700; font-size:.95rem}
 
     /* Charts */
-    .charts-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px; margin-bottom:26px}
+    .charts-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; margin-bottom:26px}
     .chart-container{
       background:linear-gradient(180deg,var(--card),rgba(14,18,48,.85));
       border:1px solid var(--brd); border-radius:18px; padding:18px; box-shadow:var(--shadow)
@@ -63,7 +63,7 @@
       background:linear-gradient(90deg,var(--a),var(--b)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
       letter-spacing:.3px
     }
-    .chart-canvas{max-height:380px}
+    .chart-canvas{max-height:300px; width:100%; height:auto !important}
 
     /* Lista TOP 5 */
     .crimes-list{
@@ -91,8 +91,15 @@
 
     /* Mobile */
     @media (max-width:768px){
-      .chart-canvas{max-height:320px}
+      .chart-canvas{max-height:250px}
+      .stats-grid{grid-template-columns:1fr}
+      .charts-grid{grid-template-columns:1fr}
       .crime-name{font-size:.95rem}
+    }
+    @media (min-width:769px) and (max-width:1024px){
+      .chart-canvas{max-height:280px}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .charts-grid{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
@@ -108,19 +115,19 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number" data-target="409">0</div>
-        <div class="stat-label">TOTAL DE OCORRÊNCIAS</div>
+        <div class="stat-label">Total de Ocorrências</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="13">0</div>
-        <div class="stat-label">TIPOS DE CRIMES</div>
+        <div class="stat-label">Tipos de Crimes</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="97">0</div>
-        <div class="stat-label">MAIORES DETIDOS</div>
+        <div class="stat-label">Maiores Detidos</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="2">0</div>
-        <div class="stat-label">MENORES APREENDIDOS</div>
+        <div class="stat-label">Menores Apreendidos</div>
       </div>
     </div>
 
@@ -179,10 +186,10 @@
   <script>
     // animação dos KPI
     function animateNumbers() {
-      document.querySelectorAll('.stat-number').forEach(counter => {
-        const target = +counter.getAttribute('data-target'); let cur = 0;
+      document.querySelectorAll('.stat-card').forEach(counter => {
+        const target = +counter.querySelector('.stat-number').getAttribute('data-target'); let cur = 0;
         const inc = Math.max(1, Math.ceil(target / 100));
-        const tick = () => { cur += inc; if (cur >= target){ counter.textContent = target; } else { counter.textContent = cur; requestAnimationFrame(tick); } };
+        const tick = () => { cur += inc; if (cur >= target){ counter.querySelector('.stat-number').textContent = target; } else { counter.querySelector('.stat-number').textContent = cur; requestAnimationFrame(tick); } };
         requestAnimationFrame(tick);
       });
     }
