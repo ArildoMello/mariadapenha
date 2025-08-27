@@ -1,1220 +1,242 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> GML - 2025 - Lei Maria da Penha</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GML 2025 — Lei Maria da Penha</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Rajdhani', monospace;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a1a1a 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #00ffff;
-            overflow-x: hidden;
-            position: relative;
-        }
+  <!-- ==== CSS SIMPLIFICADO (clean + neon azul) ==== -->
+  <style>
+    :root{
+      --bg1:#0a0f1f; --bg2:#0d1533; --card:#121a3a;
+      --text:#eaf1ff; --muted:#a9b7e3;
+      --a:#00e6ff; --b:#2f7bff; --c:#7c4dff;
+      --brd:rgba(130,160,255,.22); --glass:rgba(18,25,61,.55);
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box; margin:0; padding:0}
+    body{
+      font-family:'Inter',system-ui,Segoe UI,Arial,sans-serif;
+      color:var(--text);
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      min-height:100vh; padding:20px;
+    }
+    .container{max-width:1200px; margin:0 auto}
+    .header{
+      text-align:center; margin-bottom:24px; padding:24px 16px;
+      background:linear-gradient(180deg,var(--glass),rgba(10,12,30,.45));
+      border:1px solid var(--brd); border-radius:20px; box-shadow:var(--shadow)
+    }
+    .header h1{
+      font-size:clamp(1.8rem,1.2rem + 2vw,2.6rem); font-weight:900;
+      background:linear-gradient(90deg,var(--a),var(--b),var(--c));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:6px;
+    }
+    .header p{color:var(--muted); font-weight:600}
 
-        /* Efeito de grid cyberpunk no fundo */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: 
-                linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: -1;
-            animation: gridMove 20s linear infinite;
-        }
+    /* Cards KPI */
+    .stats-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:22px 0 30px}
+    .stat-card{
+      background:linear-gradient(180deg,var(--card),rgba(14,18,48,.85));
+      border:1px solid var(--brd); border-radius:16px; padding:20px; text-align:center;
+      box-shadow:var(--shadow)
+    }
+    .stat-number{
+      font-size:2.4rem; font-weight:900; line-height:1;
+      background:linear-gradient(90deg,var(--a),var(--b));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:6px;
+    }
+    .stat-label{color:var(--muted); font-weight:700; font-size:.95rem}
 
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
+    /* Charts */
+    .charts-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px; margin-bottom:26px}
+    .chart-container{
+      background:linear-gradient(180deg,var(--card),rgba(14,18,48,.85));
+      border:1px solid var(--brd); border-radius:18px; padding:18px; box-shadow:var(--shadow)
+    }
+    .chart-title{
+      text-align:center; font-weight:800; margin-bottom:12px;
+      background:linear-gradient(90deg,var(--a),var(--b)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      letter-spacing:.3px
+    }
+    .chart-canvas{max-height:380px}
 
-        /* Partículas flutuantes */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
+    /* Lista TOP 5 */
+    .crimes-list{
+      background:linear-gradient(180deg,var(--card),rgba(14,18,48,.85));
+      border:1px solid var(--brd); border-radius:18px; padding:22px; box-shadow:var(--shadow)
+    }
+    .crimes-title{
+      text-align:center; font-weight:900; margin-bottom:16px;
+      background:linear-gradient(90deg,var(--a),var(--b)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      letter-spacing:.4px
+    }
+    .crime-item{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:12px 14px; border-radius:12px; border:1px solid var(--brd);
+      background:rgba(14,18,48,.6); margin-bottom:10px
+    }
+    .crime-name{color:var(--text); font-weight:600; font-size:.98rem}
+    .crime-count{
+      min-width:64px; text-align:center; font-weight:900;
+      padding:8px 12px; border-radius:999px; color:#001223;
+      background:linear-gradient(90deg,var(--a),var(--b))
+    }
 
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #00ffff;
-            border-radius: 50%;
-            opacity: 0.7;
-            animation: float 10s infinite linear;
-        }
+    .footer{ text-align:center; color:var(--muted); margin:26px 0 6px; font-weight:700 }
 
-        .particle:nth-child(2n) {
-            background: #ff00ff;
-            animation-duration: 12s;
-        }
-
-        .particle:nth-child(3n) {
-            background: #ff0080;
-            animation-duration: 8s;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px;
-            background: 
-                linear-gradient(145deg, rgba(0,0,0,0.8) 0%, rgba(26,10,26,0.6) 100%),
-                linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.1) 50%, transparent 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            position: relative;
-            overflow: hidden;
-            animation: headerPulse 3s ease-in-out infinite alternate;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.4) 50%, transparent 100%);
-            animation: scanLine 2s linear infinite;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 2px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
-            border-radius: inherit;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            animation: borderGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes headerPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
-        }
-
-        @keyframes scanLine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        @keyframes borderGlow {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .header h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 3.5em;
-            font-weight: 900;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textGlow 3s ease-in-out infinite alternate, gradientShift 4s ease-in-out infinite;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 0 30px rgba(0,255,255,0.5);
-        }
-
-        @keyframes textGlow {
-            0% { 
-                filter: drop-shadow(0 0 5px #00ffff) drop-shadow(0 0 15px #ff00ff);
-            }
-            100% { 
-                filter: drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 25px #ff00ff);
-            }
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .header p {
-            font-size: 1.4em;
-            font-weight: 500;
-            color: #00ffff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 0 10px rgba(0,255,255,0.8);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
-            background: 
-                linear-gradient(145deg, rgba(0,0,0,0.9) 0%, rgba(26,10,26,0.7) 100%);
-            padding: 35px;
-            border-radius: 15px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 1px solid rgba(0,255,255,0.3);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .stat-card:hover::before {
-            transform: translateX(0);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: #00ffff;
-            box-shadow: 
-                0 20px 40px rgba(0,255,255,0.3),
-                0 0 50px rgba(255,0,255,0.2),
-                inset 0 0 50px rgba(0,255,255,0.1);
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle, rgba(0,255,255,0.05) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .stat-card:hover::after {
-            opacity: 1;
-            animation: rotate 2s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .stat-number {
-            font-family: 'Orbitron', monospace;
-            font-size: 3.5em;
-            font-weight: 700;
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(0,255,255,0.5);
-            animation: numberPulse 2s ease-in-out infinite alternate;
-            position: relative;
-            z-index: 2;
-        }
-
-        @keyframes numberPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        .stat-label {
-            font-size: 1.2em;
-            color: #00ffff;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-
-        .chart-container {
-            background: 
-                linear-gradient(145deg, rgba(0,0,0,0.9) 0%, rgba(26,10,26,0.8) 100%);
-            padding: 35px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            transition: all 0.4s ease;
-        }
-
-        .chart-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 2px;
-            background: 
-                linear-gradient(45deg, 
-                    rgba(0,255,255,0.8), 
-                    rgba(255,0,255,0.8), 
-                    rgba(255,0,128,0.8), 
-                    rgba(0,255,255,0.8)
-                );
-            border-radius: inherit;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            opacity: 0.6;
-            animation: borderFlow 3s linear infinite;
-        }
-
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .chart-container:hover {
-            transform: scale(1.02);
-            box-shadow: 
-                0 25px 50px rgba(0,255,255,0.3),
-                0 0 100px rgba(255,0,255,0.2);
-        }
-
-        .chart-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.6em;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 2;
-        }
-
-        .chart-canvas {
-            max-height: 400px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .crimes-list {
-            background: 
-                linear-gradient(145deg, rgba(0,0,0,0.95) 0%, rgba(26,10,26,0.9) 100%);
-            padding: 40px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(0,255,255,0.3);
-        }
-
-        .crimes-list::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 98px,
-                    rgba(0,255,255,0.03) 100px
-                );
-            animation: dataFlow 10s linear infinite;
-        }
-
-        @keyframes dataFlow {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100px); }
-        }
-
-        .crimes-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2em;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(45deg, #ff0080, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 0 30px rgba(255,0,128,0.5);
-        }
-
-        .crime-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            margin-bottom: 15px;
-            background: 
-                linear-gradient(90deg, 
-                    rgba(0,255,255,0.1) 0%, 
-                    rgba(255,0,255,0.05) 50%, 
-                    rgba(0,255,255,0.1) 100%
-                );
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-        }
-
-        .crime-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #00ffff, #ff00ff, #ff0080);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .crime-item:hover::before {
-            transform: scaleY(1);
-        }
-
-        .crime-item:hover {
-            background: 
-                linear-gradient(90deg, 
-                    rgba(0,255,255,0.2) 0%, 
-                    rgba(255,0,255,0.1) 50%, 
-                    rgba(0,255,255,0.2) 100%
-                );
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(0,255,255,0.3);
-        }
-
-        .crime-name {
-            flex: 1;
-            font-weight: 500;
-            font-size: 1.1em;
-            color: #00ffff;
-            position: relative;
-            z-index: 2;
-        }
-
-        .crime-count {
-            background: linear-gradient(45deg, #ff0080, #ff00ff);
-            color: #000;
-            font-family: 'Orbitron', monospace;
-            font-weight: 700;
-            padding: 12px 20px;
-            border-radius: 25px;
-            margin-left: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .crime-count::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-            transition: left 0.5s ease;
-        }
-
-        .crime-item:hover .crime-count::before {
-            left: 100%;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 30px;
-            color: #00ffff;
-            font-family: 'Orbitron', monospace;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Glitch effect */
-        .glitch {
-            position: relative;
-            animation: glitch-animation 2s infinite;
-        }
-
-        @keyframes glitch-animation {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5em;
-            }
-            
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .chart-container, .crimes-list {
-                padding: 25px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-        }
-
-        /* Scrollbar customizada */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #00ffff, #ff00ff);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #ff00ff, #00ffff);
-        }
-    </style>
+    /* Mobile */
+    @media (max-width:768px){
+      .chart-canvas{max-height:320px}
+      .crime-name{font-size:.95rem}
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Partículas flutuantes ENTARA COM OS DADOS AQUI --> 
-    <div class="particles" id="particles"></div>
-
-    <div class="container">
-        <div class="header">
-            <h1 class="glitch">◢GUARDA MUNICIPAL DE LONDRINA◤</h1>
-            <p>⟨ ANÁLISE 2025 - LEI MARIA DA PENHA ⟩</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" data-target="409">0</div>
-                <div class="stat-label">⟨ TOTAL OCORRÊNCIAS ⟩</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="13">0</div>
-                <div class="stat-label">⟨ TIPOS DE CRIMES ⟩</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="97">0</div>
-                <div class="stat-label">⟨ MAIORES DETIDOS ⟩</div>
-            </div>
-             <div class="stat-card">
-                <div class="stat-number" data-target="2">0</div>
-                <div class="stat-label">⟨ MENORES APREENDIDOS ⟩</div>
-            </div>
-        </div>
-
-        <div class="charts-grid">
-            <div class="chart-container">
-                <h3 class="chart-title">◢ MAPEAMENTO REGIONAL ◤</h3>
-                <canvas id="regiaoChart" class="chart-canvas"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h3 class="chart-title">◢ ANÁLISE TEMPORAL ◤</h3>
-                <canvas id="periodoChart" class="chart-canvas"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h3 class="chart-title">◢ PADRÃO SEMANAL ◤</h3>
-                <canvas id="diaSemanaChart" class="chart-canvas"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h3 class="chart-title">◢ DISTRIBUIÇÃO REGIONAL ◤</h3>
-                <canvas id="regiaoDonutChart" class="chart-canvas"></canvas>
-            </div>
-        </div>
-
-        <div class="crimes-list">
-            <h3 class="crimes-title">◢ TOP 5 - AMEAÇAS IDENTIFICADAS ◤</h3> 
-            <div class="crime-item">
-                <div class="crime-name">⟨ MARIA DA PENHA - DESCUMPRIMENTO DE MEDIDA (Art. 24-A) ⟩</div>
-                <div class="crime-count">193</div> 
-            </div>
-            <div class="crime-item">
-                <div class="crime-name">⟨ LESÃO CORPORAL - VIOLÊNCIA DOMÉSTICA (Art. 129, § 9º) ⟩</div>
-                <div class="crime-count">82</div>
-            </div>
-            <div class="crime-item">
-                <div class="crime-name">⟨ MARIA DA PENHA SEM MEDIDA PROTETIVA (Art. 10) ⟩</div>
-                <div class="crime-count">48</div>
-            </div>
-            <div class="crime-item">
-                <div class="crime-name">⟨ DESCUMPRIR DECISÃO JUDICIAL - MEDIDAS PROTETIVAS ⟩</div>
-                <div class="crime-count">23</div>
-            </div>
-            <div class="crime-item">
-                <div class="crime-name">⟨ LESÃO CORPORAL CONTRA MULHER - VIOLÊNCIA DOMÉSTICA ⟩</div>
-                <div class="crime-count">16</div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p> *** SISTEMA ANALISE ATIVO ⟩ DADOS PROCESSADOS ◤ 25/08/2025 ◢ </p>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>◢ GUARDA MUNICIPAL DE LONDRINA ◤</h1>
+      <p>ANÁLISE 2025 – LEI MARIA DA PENHA</p>
     </div>
 
-    <script>
-        // Criar partículas flutuantes
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
+    <!-- KPIs -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" data-target="409">0</div>
+        <div class="stat-label">TOTAL DE OCORRÊNCIAS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="13">0</div>
+        <div class="stat-label">TIPOS DE CRIMES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="97">0</div>
+        <div class="stat-label">MAIORES DETIDOS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="2">0</div>
+        <div class="stat-label">MENORES APREENDIDOS</div>
+      </div>
+    </div>
 
-        // Animação dos números
-        function animateNumbers() {
-            const counters = document.querySelectorAll('.stat-number');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const increment = target / 100;
-                let current = 0;
-                
-                const updateCounter = () => {
-                    if (current < target) {
-                        current += increment;
-                        counter.textContent = Math.floor(current);
-                        setTimeout(updateCounter, 30);
-                    } else {
-                        counter.textContent = target;
-                    }
-                };
-                
-                setTimeout(updateCounter, Math.random() * 2000);
-            });
-        }
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-container">
+        <h3 class="chart-title">Mapeamento Regional</h3>
+        <canvas id="regiaoChart" class="chart-canvas"></canvas>
+      </div>
 
-        // Configuração global dos gráficos com tema cyberpunk
-        Chart.defaults.font.family = "'Rajdhani', monospace";
-        Chart.defaults.font.size = 14;
-        Chart.defaults.color = '#00ffff';
-        Chart.defaults.backgroundColor = 'rgba(0,255,255,0.1)';
+      <div class="chart-container">
+        <h3 class="chart-title">Análise Temporal</h3>
+        <canvas id="periodoChart" class="chart-canvas"></canvas>
+      </div>
 
-        // Dados dos gráficos
-        const dadosGraficos = {
-            porRegiao: {
-                labels: ['CENTRO', 'LESTE', 'OESTE', 'NORTE', 'SUL', 'DISTRITOS', 'SEM DADOS'],
-                values: [62, 70, 69, 126, 60, 5, 17]
-            },
-            porPeriodo: {
-                labels: ['MANHÃ', 'TARDE', 'NOITE', 'MADRUGADA'],
-                values: [92, 119, 147, 51]
-            },
-            porDiaSemana: {
-                labels: ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'],
-                values: [72, 59, 50, 64, 40, 61, 63]
-            }
-        };
+      <div class="chart-container">
+        <h3 class="chart-title">Padrão Semanal</h3>
+        <canvas id="diaSemanaChart" class="chart-canvas"></canvas>
+      </div>
 
-        // Paleta cyberpunk
-        const coresCyber = {
-            neon: ['#00ffff', '#ff00ff', '#ff0080', '#0080ff', '#80ff00', '#ff8000', '#8000ff'],
-            gradientes: [
-                'linear-gradient(45deg, #00ffff, #ff00ff)',
-                'linear-gradient(45deg, #ff00ff, #ff0080)', 
-                'linear-gradient(45deg, #ff0080, #0080ff)',
-                'linear-gradient(45deg, #0080ff, #80ff00)',
-                'linear-gradient(45deg, #80ff00, #ff8000)',
-                'linear-gradient(45deg, #ff8000, #8000ff)',
-                'linear-gradient(45deg, #8000ff, #00ffff)'
-            ]
-        };
+      <div class="chart-container">
+        <h3 class="chart-title">Distribuição Regional</h3>
+        <canvas id="regiaoDonutChart" class="chart-canvas"></canvas>
+      </div>
+    </div>
 
-        // Gráfico por Região (Barra Cyberpunk)
-        const ctxRegiao = document.getElementById('regiaoChart').getContext('2d');
-        new Chart(ctxRegiao, {
-            type: 'bar',
-            data: {
-                labels: dadosGraficos.porRegiao.labels,
-                datasets: [{
-                    label: 'OCORRÊNCIAS',
-                    data: dadosGraficos.porRegiao.values,
-                    backgroundColor: coresCyber.neon.map(color => color + '80'),
-                    borderColor: coresCyber.neon,
-                    borderWidth: 2,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,255,255,0.2)',
-                            lineWidth: 1
-                        },
-                        ticks: {
-                            color: '#00ffff',
-                            font: {
-                                family: 'Orbitron',
-                                weight: 'bold'
-                            }
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: '#ff00ff',
-                            font: {
-                                family: 'Orbitron',
-                                weight: 'bold'
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeOutBounce'
-                }
-            }
-        });
+    <!-- Top 5 -->
+    <div class="crimes-list">
+      <h3 class="crimes-title">Top 5 — Ameaças Identificadas</h3>
+      <div class="crime-item">
+        <div class="crime-name">Maria da Penha — Descumprimento de Medida (Art. 24-A)</div>
+        <div class="crime-count">193</div>
+      </div>
+      <div class="crime-item">
+        <div class="crime-name">Lesão Corporal — Violência Doméstica (Art. 129, § 9º)</div>
+        <div class="crime-count">82</div>
+      </div>
+      <div class="crime-item">
+        <div class="crime-name">Maria da Penha sem Medida Protetiva (Art. 10)</div>
+        <div class="crime-count">48</div>
+      </div>
+      <div class="crime-item">
+        <div class="crime-name">Descumprir Decisão Judicial — Medidas Protetivas</div>
+        <div class="crime-count">23</div>
+      </div>
+      <div class="crime-item">
+        <div class="crime-name">Lesão Corporal contra Mulher — Violência Doméstica</div>
+        <div class="crime-count">16</div>
+      </div>
+    </div>
 
-        // Gráfico por Período (Radar Cyberpunk)
-        const ctxPeriodo = document.getElementById('periodoChart').getContext('2d');
-        new Chart(ctxPeriodo, {
-            type: 'radar',
-            data: {
-                labels: dadosGraficos.porPeriodo.labels,
-                datasets: [{
-                    label: 'ATIVIDADE NEURAL',
-                    data: dadosGraficos.porPeriodo.values,
-                    backgroundColor: 'rgba(0,255,255,0.2)',
-                    borderColor: '#00ffff',
-                    borderWidth: 3,
-                    pointBackgroundColor: '#ff00ff',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#00ffff',
-                            font: {
-                                family: 'Orbitron'
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255,0,255,0.3)'
-                        },
-                        pointLabels: {
-                            color: '#ff00ff',
-                            font: {
-                                family: 'Orbitron',
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#00ffff',
-                            backdropColor: 'transparent'
-                        }
-                    }
-                },
-                animation: {
-                    duration: 2500,
-                    easing: 'easeOutElastic'
-                }
-            }
-        });
+    <div class="footer">*** Sistema ativo — dados processados em 25/08/2025 ***</div>
+  </div>
 
-        // Gráfico por Dia da Semana (Linha Neon)
-        const ctxDiaSemana = document.getElementById('diaSemanaChart').getContext('2d');
-        new Chart(ctxDiaSemana, {
-            type: 'line',
-            data: {
-                labels: dadosGraficos.porDiaSemana.labels,
-                datasets: [{
-                    label: 'PADRÃO SEMANAL',
-                    data: dadosGraficos.porDiaSemana.values,
-                    backgroundColor: 'rgba(255,0,255,0.1)',
-                    borderColor: '#ff00ff',
-                    borderWidth: 4,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#00ffff',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 3,
-                    pointRadius: 8,
-                    pointHoverRadius: 12,
-                    shadowColor: '#ff00ff',
-                    shadowBlur: 20
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#ff00ff',
-                            font: {
-                                family: 'Orbitron'
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,255,255,0.2)'
-                        },
-                        ticks: {
-                            color: '#00ffff',
-                            font: {
-                                family: 'Orbitron'
-                            }
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(255,0,255,0.1)'
-                        },
-                        ticks: {
-                            color: '#ff00ff',
-                            font: {
-                                family: 'Orbitron'
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    duration: 3000,
-                    easing: 'easeInOutQuart'
-                }
-            }
-        });
+  <!-- ==== JS ORIGINAL (gráficos/contadores) preservado ==== -->
+  <script>
+    // animação dos KPI
+    function animateNumbers() {
+      document.querySelectorAll('.stat-number').forEach(counter => {
+        const target = +counter.getAttribute('data-target'); let cur = 0;
+        const inc = Math.max(1, Math.ceil(target / 100));
+        const tick = () => { cur += inc; if (cur >= target){ counter.textContent = target; } else { counter.textContent = cur; requestAnimationFrame(tick); } };
+        requestAnimationFrame(tick);
+      });
+    }
 
-        // Gráfico Donut Cyberpunk
-        const ctxRegiaoDonut = document.getElementById('regiaoDonutChart').getContext('2d');
-        new Chart(ctxRegiaoDonut, {
-            type: 'doughnut',
-            data: {
-                labels: dadosGraficos.porRegiao.labels,
-                datasets: [{
-                    data: dadosGraficos.porRegiao.values,
-                    backgroundColor: coresCyber.neon.map(color => color + '80'),
-                    borderColor: coresCyber.neon,
-                    borderWidth: 3,
-                    hoverBorderWidth: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '60%',
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#00ffff',
-                            padding: 20,
-                            usePointStyle: true,
-                            font: {
-                                family: 'Orbitron',
-                                size: 12
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateRotate: true,
-                    duration: 2000
-                }
-            }
-        });
+    // Chart defaults
+    Chart.defaults.font.family = "'Inter', system-ui, Arial";
+    Chart.defaults.font.size = 13;
+    Chart.defaults.color = '#cfe6ff';
 
-        // Animação de entrada com delay
-        function initAnimations() {
-            const elements = document.querySelectorAll('.stat-card, .chart-container, .crimes-list');
-            elements.forEach((element, index) => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(50px) rotateX(10deg)';
-                
-                setTimeout(() => {
-                    element.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0) rotateX(0)';
-                }, index * 200);
-            });
-        }
+    const dadosGraficos = {
+      porRegiao: { labels:['CENTRO','LESTE','OESTE','NORTE','SUL','DISTRITOS','SEM DADOS'], values:[62,70,69,126,60,5,17] },
+      porPeriodo:{ labels:['MANHÃ','TARDE','NOITE','MADRUGADA'], values:[92,119,147,51] },
+      porDiaSemana:{ labels:['DOM','SEG','TER','QUA','QUI','SEX','SÁB'], values:[72,59,50,64,40,61,63] }
+    };
 
-        // Efeitos de hover cyberpunk
-        function addCyberEffects() {
-            const statCards = document.querySelectorAll('.stat-card');
-            statCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.animation = 'none';
-                    this.style.transform = 'translateY(-15px) scale(1.08) rotateX(5deg)';
-                    
-                    // Efeito de glitch nos números
-                    const number = this.querySelector('.stat-number');
-                    number.style.animation = 'glitch-animation 0.3s ease-in-out';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1) rotateX(0)';
-                    
-                    const number = this.querySelector('.stat-number');
-                    setTimeout(() => {
-                        number.style.animation = 'numberPulse 2s ease-in-out infinite alternate';
-                    }, 300);
-                });
-            });
+    const palette = ['#00e6ff','#2f7bff','#7c4dff','#00b3ff','#66e0ff','#9db3ff','#b589ff'];
 
-            // Efeito de scan nos gráficos
-            const chartContainers = document.querySelectorAll('.chart-container');
-            chartContainers.forEach(container => {
-                container.addEventListener('mouseenter', function() {
-                    const scanLine = document.createElement('div');
-                    scanLine.style.cssText = `
-                        position: absolute;
-                        top: 0;
-                        left: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.4) 50%, transparent 100%);
-                        animation: scanLine 1s ease-out;
-                        pointer-events: none;
-                        z-index: 10;
-                    `;
-                    this.appendChild(scanLine);
-                    
-                    setTimeout(() => {
-                        if (scanLine.parentNode) {
-                            scanLine.parentNode.removeChild(scanLine);
-                        }
-                    }, 1000);
-                });
-            });
-        }
+    // Barra — Região
+    new Chart(document.getElementById('regiaoChart').getContext('2d'),{
+      type:'bar',
+      data:{ labels:dadosGraficos.porRegiao.labels, datasets:[{ label:'Ocorrências', data:dadosGraficos.porRegiao.values,
+        backgroundColor: palette.map(c=>c+'66'), borderColor: palette, borderWidth:2, borderRadius:8, borderSkipped:false }]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{
+        y:{ beginAtZero:true, grid:{color:'rgba(200,220,255,.15)'} },
+        x:{ grid:{display:false} } } }
+    });
 
-        // Sistema de digitação cyberpunk para títulos
-        function typeWriter(element, text, speed = 100) {
-            element.innerHTML = '';
-            let i = 0;
-            const timer = setInterval(() => {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(timer);
-                }
-            }, speed);
-        }
+    // Radar — Período
+    new Chart(document.getElementById('periodoChart').getContext('2d'),{
+      type:'radar',
+      data:{ labels:dadosGraficos.porPeriodo.labels, datasets:[{ label:'Atividade', data:dadosGraficos.porPeriodo.values,
+        backgroundColor:'rgba(0,230,255,.15)', borderColor:'#00e6ff', borderWidth:3, pointBackgroundColor:'#2f7bff', pointRadius:5 }]},
+      options:{ responsive:true, maintainAspectRatio:false, scales:{ r:{ beginAtZero:true, grid:{color:'rgba(200,220,255,.15)'},
+        pointLabels:{ color:'#cfe6ff' }, ticks:{ backdropColor:'transparent' } } } }
+    });
 
-        // Efeito de matrix rain
-        function createMatrixRain() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                pointer-events: none;
-                z-index: -1;
-                opacity: 0.1;
-            `;
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const characters = '01アLイOウNエDオRカIキNクAケGコUサAシRスDセAソタMチUツNテIトCナIニPヌAネLノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = [];
-            
-            for (let x = 0; x < columns; x++) {
-                drops[x] = 1;
-            }
-            
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.fillStyle = '#00ffff';
-                ctx.font = fontSize + 'px monospace';
-                
-                for (let i = 0; i < drops.length; i++) {
-                    const text = characters.charAt(Math.floor(Math.random() * characters.length));
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-            }
-            
-            document.body.appendChild(canvas);
-            setInterval(draw, 33);
-        }
+    // Linha — Dia da semana
+    new Chart(document.getElementById('diaSemanaChart').getContext('2d'),{
+      type:'line',
+      data:{ labels:dadosGraficos.porDiaSemana.labels, datasets:[{ label:'Padrão semanal', data:dadosGraficos.porDiaSemana.values,
+        fill:true, tension:.35, borderColor:'#7c4dff', backgroundColor:'rgba(124,77,255,.12)', pointBackgroundColor:'#00e6ff', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5 }]},
+      options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, grid:{color:'rgba(200,220,255,.15)'} }, x:{ grid:{display:false} } } }
+    });
 
-        // Audio feedback cyberpunk (opcional)
-        function playBeep(frequency = 800, duration = 100) {
-            if (typeof(AudioContext) !== "undefined" || typeof(webkitAudioContext) !== "undefined") {
-                const context = new (AudioContext || webkitAudioContext)();
-                const oscillator = context.createOscillator();
-                const gainNode = context.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(context.destination);
-                
-                oscillator.frequency.value = frequency;
-                oscillator.type = 'square';
-                
-                gainNode.gain.setValueAtTime(0.1, context.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration / 1000);
-                
-                oscillator.start(context.currentTime);
-                oscillator.stop(context.currentTime + duration / 1000);
-            }
-        }
+    // Donut — Distribuição
+    new Chart(document.getElementById('regiaoDonutChart').getContext('2d'),{
+      type:'doughnut',
+      data:{ labels:dadosGraficos.porRegiao.labels, datasets:[{ data:dadosGraficos.porRegiao.values,
+        backgroundColor: palette.map(c=>c+'99'), borderColor: palette, borderWidth:2 }]},
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'58%', plugins:{ legend:{ position:'right' } } }
+    });
 
-        // Adicionar sons aos hovers
-        function addAudioFeedback() {
-            const interactiveElements = document.querySelectorAll('.stat-card, .crime-item, .chart-container');
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    playBeep(1200, 50);
-                });
-            });
-        }
-
-        // Sistema de notificação cyberpunk
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(26,10,26,0.9));
-                color: #00ffff;
-                padding: 15px 25px;
-                border-radius: 10px;
-                border: 2px solid #00ffff;
-                font-family: 'Orbitron', monospace;
-                font-size: 14px;
-                z-index: 9999;
-                animation: slideIn 0.5s ease-out;
-                box-shadow: 0 10px 30px rgba(0,255,255,0.3);
-            `;
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.5s ease-in';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 500);
-            }, 3000);
-        }
-
-        // CSS para animações de notificação
-        const notificationStyles = document.createElement('style');
-        notificationStyles.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(notificationStyles);
-
-        // Inicializar tudo
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            setTimeout(() => {
-                initAnimations();
-                animateNumbers();
-                addCyberEffects();
-                addAudioFeedback();
-                createMatrixRain();
-                
-                // Mostrar notificação de sistema iniciado
-                setTimeout(() => {
-                    showNotification('⟨ SISTEMA GML ATIVO ⟩ DADOS CARREGADOS');
-                }, 2000);
-                
-                // Efeito de typing no título
-                setTimeout(() => {
-                    const title = document.querySelector('.header h1');
-                    const originalText = title.textContent;
-                    typeWriter(title, originalText, 100);
-                }, 1000);
-                
-            }, 500);
-        });
-
-        // Responsividade cyberpunk
-        function adjustCyberResponsive() {
-            const screenWidth = window.innerWidth;
-            const particles = document.querySelectorAll('.particle');
-            
-            if (screenWidth < 768) {
-                // Reduzir partículas em telas pequenas
-                particles.forEach((particle, index) => {
-                    if (index % 2 === 0) {
-                        particle.style.display = 'none';
-                    }
-                });
-            } else {
-                particles.forEach(particle => {
-                    particle.style.display = 'block';
-                });
-            }
-        }
-
-        window.addEventListener('resize', adjustCyberResponsive);
-        adjustCyberResponsive();
-
-        // Easter egg - sequência de teclas cyberpunk
-        let keySequence = [];
-        const secretCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
-        
-        document.addEventListener('keydown', function(e) {
-            keySequence.push(e.code);
-            if (keySequence.length > secretCode.length) {
-                keySequence.shift();
-            }
-            
-            if (keySequence.join(',') === secretCode.join(',')) {
-                // Ativar modo matriz intenso
-                document.body.style.animation = 'glitch-animation 0.5s ease-in-out';
-                showNotification('⟨ CÓDIGO KONAMI DETECTADO ⟩ MODO MATRIX ATIVADO');
-                
-                // Intensificar efeitos por 10 segundos
-                const originalOpacity = document.querySelector('canvas').style.opacity;
-                document.querySelector('canvas').style.opacity = '0.3';
-                
-                setTimeout(() => {
-                    document.querySelector('canvas').style.opacity = originalOpacity;
-                    document.body.style.animation = '';
-                }, 10000);
-                
-                keySequence = [];
-            }
-        });
-    </script>
+    // start
+    animateNumbers();
+  </script>
 </body>
 </html>
