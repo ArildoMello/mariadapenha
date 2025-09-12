@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://arildomello.github.io/propriospublicos/assets/img/Ico.ico" />
   <title>GML 2025 — Lei Maria da Penha</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -107,14 +108,14 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>◢ GUARDA MUNICIPAL DE LONDRINA ◤</h1>
+      <h1>GUARDA MUNICIPAL DE LONDRINA<img src="https://arildomello.github.io/propriospublicos/assets/img/Ico.ico" alt="Ícone GML" class="logo"></h1>
       <p>ANÁLISE 2025 – LEI MARIA DA PENHA</p>
     </div>
 
     <!-- KPIs -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-number" data-target="421">0</div>
+        <div class="stat-number" data-target="430">0</div>
         <div class="stat-label">Total de Ocorrências</div>
       </div>
       <div class="stat-card">
@@ -122,7 +123,7 @@
         <div class="stat-label">Tipos de Crimes</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number" data-target="101">0</div>
+        <div class="stat-number" data-target="103">0</div>
         <div class="stat-label">Maiores Detidos</div>
       </div>
       <div class="stat-card">
@@ -159,7 +160,7 @@
       <h3 class="crimes-title">Top 5 — Ameaças Identificadas</h3>
       <div class="crime-item">
         <div class="crime-name">Maria da Penha — Descumprimento de Medida (Art. 24-A)</div>
-        <div class="crime-count">203</div>
+        <div class="crime-count">208</div>
       </div>
       <div class="crime-item">
         <div class="crime-name">Lesão Corporal — Violência Doméstica (Art. 129, § 9º)</div>
@@ -167,7 +168,7 @@
       </div>
       <div class="crime-item">
         <div class="crime-name">Maria da Penha sem Medida Protetiva (Art. 10)</div>
-        <div class="crime-count">50</div>
+        <div class="crime-count">51</div>
       </div>
       <div class="crime-item">
         <div class="crime-name">Descumprir Decisão Judicial — Medidas Protetivas</div>
@@ -179,7 +180,7 @@
       </div>
     </div>
 
-    <div class="footer">*** Sistema ativo — dados processados em 31/08/2025 ***</div>
+    <div class="footer">*** Sistema ativo — dados processados em 08/09/2025 ***</div>
   </div>
 
   <!-- ==== JS ORIGINAL (gráficos/contadores) preservado ==== -->
@@ -200,9 +201,9 @@
     Chart.defaults.color = '#cfe6ff';
 
     const dadosGraficos = {
-      porRegiao: { labels:['CENTRO','LESTE','OESTE','NORTE','SUL','DISTRITOS','SEM DADOS'], values:[64,71,73,129,62,5,17] },
-      porPeriodo:{ labels:['MANHÃ','TARDE','NOITE','MADRUGADA'], values:[94,122,152,53] },
-      porDiaSemana:{ labels:['DOM','SEG','TER','QUA','QUI','SEX','SÁB'], values:[76,58,50,66,42,61,68] }
+      porRegiao: { labels:['CENTRO','LESTE','OESTE','NORTE','SUL','DISTRITOS','SEM DADOS'], values:[65,73,74,134,62,5,17] },
+      porPeriodo:{ labels:['MANHÃ','TARDE','NOITE','MADRUGADA'], values:[95,122,155,58] },
+      porDiaSemana:{ labels:['DOM','SEG','TER','QUA','QUI','SEX','SÁB'], values:[79,58,52,66,43,62,70] }
     };
 
     const palette = ['#00e6ff','#2f7bff','#7c4dff','#00b3ff','#66e0ff','#9db3ff','#b589ff'];
